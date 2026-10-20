@@ -59,7 +59,52 @@ function displayLogTime(log,med){const d=new Date(log.takenAt);const mode=log.pr
 function displayRoundingNote(m){return ''}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function setStorageStatus(msg,ok=true){const el=$('storageStatus');if(el){el.textContent=msg;el.style.background=ok?'#e2f5e9':'#fff2d6';el.style.color=ok?'#24734d':'#8b5d0b'}}
-function save(){try{localStorage.setItem(STORE,JSON.stringify(state));const check=localStorage.getItem(STORE);if(check!==JSON.stringify(state)){setStorageStatus('Could not verify browser save',false);return false}setStorageStatus('Auto-saved in this browser',true);return true}catch(e){setStorageStatus('Browser storage unavailable',false);return false}}
+let cloudSyncEnabled=false, cloudSaveQueue=Promise.resolve(), cloudChannel=null;
+function save(){
+ let localOK=true;
+ try{localStorage.setItem(STORE,JSON.stringify(state));const check=localStorage.getItem(STORE);if(check!==JSON.stringify(state)){setStorageStatus('Could not verify browser save',false);localOK=false}}
+ catch(e){setStorageStatus('Browser storage unavailable',false);localOK=false}
+ if(cloudSyncEnabled){
+  const snapshot=JSON.parse(JSON.stringify(state));
+  cloudSaveQueue=cloudSaveQueue.then(async()=>{
+   const {data:{user}}=await window.medtrackSupabase.auth.getUser();
+   if(!user)throw new Error('Sign in to sync MedTrack.');
+   const {error}=await window.medtrackSupabase.from('medtrack_shared_state').upsert({id:'main',state:snapshot,updated_at:new Date().toISOString(),updated_by:user.id},{onConflict:'id'});
+   if(error)throw error;
+   setStorageStatus('Synced with Supabase',true);
+  }).catch(err=>{console.error('MedTrack cloud sync failed:',err);setStorageStatus('Saved on this device; cloud sync failed',false)});
+ }else if(localOK){setStorageStatus('Saved on this device · Sign in to sync',true)}
+ return localOK;
+}
+async function loadSharedState(){
+ const client=window.medtrackSupabase;
+ const {data:verification,error:verifyError}=await client.functions.invoke('employee-pin-setup',{body:{}});
+ if(verifyError||!verification?.authorized)throw new Error(verification?.error||'Your account could not be verified for MedTrack sync.');
+ const {data:row,error}=await client.from('medtrack_shared_state').select('state').eq('id','main').maybeSingle();
+ if(error)throw error;
+ if(row&&row.state&&typeof row.state==='object'){
+  state={meds:Array.isArray(row.state.meds)?row.state.meds:[],logs:Array.isArray(row.state.logs)?row.state.logs:[],employees:Array.isArray(row.state.employees)?row.state.employees:[]};
+ }else{
+  state={meds:[],logs:[],employees:[]};
+  const {data:{user}}=await client.auth.getUser();
+  const {error:insertError}=await client.from('medtrack_shared_state').insert({id:'main',state,updated_by:user.id});
+  if(insertError)throw insertError;
+ }
+ state.employees.forEach(e=>{if(!e.role)e.role='tech'});
+ try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}
+ cloudSyncEnabled=true;
+ setStorageStatus('Synced with Supabase',true);
+ if(cloudChannel)client.removeChannel(cloudChannel);
+ cloudChannel=client.channel('medtrack-shared-state').on('postgres_changes',{event:'UPDATE',schema:'public',table:'medtrack_shared_state',filter:'id=eq.main'},payload=>{
+  if(!cloudSyncEnabled||!payload.new?.state)return;
+  const incoming=payload.new.state;
+  state={meds:Array.isArray(incoming.meds)?incoming.meds:[],logs:Array.isArray(incoming.logs)?incoming.logs:[],employees:Array.isArray(incoming.employees)?incoming.employees:[]};
+  try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}
+  render();renderEmployees();
+  setStorageStatus('Updated from another device',true);
+ }).subscribe();
+ render();renderEmployees();
+}
 function parseTime(s){let m=s.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);if(!m)return null;let h=+m[1],mi=+(m[2]||0),ap=m[3].toLowerCase();if(h<1||h>12||mi>59)return null;return (h%12+(ap==='pm'?12:0))*60+mi}
 function fmtMinutes(n){let h=Math.floor(n/60),m=n%60,ap=h>=12?'PM':'AM';return (h%12||12)+':'+pad(m)+' '+ap}
 function keyFixed(m,date,time){return m.id+'|fixed|'+date+'|'+time}
@@ -176,9 +221,10 @@ $('addBtn2').onclick=open;$('quickPrnBtn').onclick=openQuickPrn;$('quickPrnClose
         'Administrator verification failed. No admin access was granted.';
       return;
     }
+    await loadSharedState();
     $('adminPassword').value = '';
     unlockAdmin('full');
-    $('adminSessionText').textContent = 'Verified administrator session';
+    $('adminSessionText').textContent = 'Verified administrator session · Cloud sync enabled';
   } catch (err) {
     console.error('Admin sign-in error:', err);
     status.textContent = 'Could not contact Supabase. Please try again.';
@@ -290,6 +336,13 @@ $('modal').addEventListener('click',e=>{if(e.target===$('modal'))close()});
 try{localStorage.setItem('__medtrack_test__','ok');localStorage.removeItem('__medtrack_test__');setStorageStatus('Auto-save enabled',true)}catch(e){setStorageStatus('Browser storage unavailable',false)}
 
 updateEmployeeSessionUI();render();
+// Restore a prior Supabase session and enable shared sync on this device.
+(async()=>{
+ try{
+  const {data:{session}}=await window.medtrackSupabase.auth.getSession();
+  if(session){await loadSharedState();setStorageStatus('Synced with Supabase',true)}
+ }catch(err){console.warn('MedTrack cloud session restore failed:',err);setStorageStatus('Cloud sync unavailable · Sign in to retry',false)}
+})();
 
 // Install prompt is available in some browsers; iPhone installation is done through Safari's Share menu.
 let deferredInstallPrompt=null;
