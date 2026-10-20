@@ -1,9 +1,9 @@
-# KS Seinor Rehab Center - Medtrack PWA starter
+# KS Senior Rehab Center - Medtrack PWA starter
 
 This package turns the current Medtrack prototype into an installable Progressive Web App (PWA) shell.
 
 ## What's included
-- `index.html`: KS Seinor Rehab Center - Medtrack interface and current local-browser tracking logic
+- `index.html`: KS Senior Rehab Center - Medtrack interface and current local-browser tracking logic
 - `manifest.webmanifest`: app name, appearance, and install icons
 - `sw.js`: service worker for caching the app shell
 - `icons/`: app icons

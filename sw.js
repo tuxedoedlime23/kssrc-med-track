@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medtrack-pwa-v1';
+const CACHE_NAME = 'medtrack-pwa-v3';
 const CORE_ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
