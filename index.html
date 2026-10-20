@@ -41,7 +41,16 @@
 <div class="field full hidden" id="prnFields"><h3 style="margin:4px 0 0;font-size:15px">Optional as-needed limits</h3><div class="times-note">Only enter limits that are explicitly on the prescription label or confirmed by a pharmacist/clinician. Leave blank if no limit is specified.</div><div class="form-grid"><div class="field"><label for="prnMaxDoses">Maximum doses in any 24 hours</label><input id="prnMaxDoses" type="number" min="1" max="99" step="1" placeholder="e.g. 6"></div><div class="field"><label for="prnMinHours">Minimum hours between doses</label><input id="prnMinHours" type="number" min="0.25" max="168" step="0.25" placeholder="e.g. 4"></div><div class="field full"><label for="prnTimeRounding">Optional display-time rounding</label><select id="prnTimeRounding"><option value="exact">Show exact recorded time</option><option value="nearest10">Round display to nearest 10 minutes</option><option value="up10">Always round display up to next 10 minutes</option><option value="down10">Always round display down to 10 minutes</option></select><div class="times-note">Only changes how this medication's time is displayed in Dose history and Recent activity. The exact timestamp is still saved and used for PRN limit warnings.</div></div></div></div>
 <div class="field full"><div class="pillnote" id="modeHelp">Fixed-time mode keeps the prescribed daily times unchanged even if a dose is recorded late.</div></div>
 </div><div class="form-actions"><button type="button" class="secondary" id="cancelBtn">Cancel</button><button type="button" class="primary" id="saveBtn">Save medication</button></div></form></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  window.medtrackSupabase = window.supabase.createClient(
+    "https://rcjfkmqgfjuzyouagvcv.supabase.co",
+    "sb_publishable_FAfo7_1O2arfPfq_-C8U6A_tTFjT8DA"
+  );
+</script>
+
+ <script>
 (function(){
 const STORE='medtrack-prototype-v2';let state={meds:[],logs:[],employees:[]};try{const x=localStorage.getItem(STORE);if(x)state=JSON.parse(x)}catch(e){}if(!Array.isArray(state.meds))state.meds=[];if(!Array.isArray(state.logs))state.logs=[];if(!Array.isArray(state.employees))state.employees=[];state.employees.forEach(e=>{if(!e.role)e.role='tech'});
 const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0'),dateKey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),todayKey=()=>dateKey(new Date());let selectedDate=todayKey(),activeEmployee=null;
@@ -261,3 +270,6 @@ if('serviceWorker' in navigator && location.protocol!=='file:'){
 
 })();
 </script></body></html>
+
+
+
