@@ -29,3 +29,10 @@ New in this version
 
 
 Latest update: Employee sign-in/sign-off now persists for a session, and each employee has a Pharmacist or Pharmacy Technician position. Pharmacists receive full admin access; Pharmacy Technicians receive basic admin access. Previous-day dose review and entry are now located on the Dose history page in the right-side panel.
+
+
+Admin and employee access update (v14)
+- Master Admin passcode: 8522 (Full Admin only). The former 1707 basic-admin master passcode has been removed.
+- Pharmacy Technicians and Pharmacists enter through Employee sign in with their assigned employee PIN and role.
+- PRN limit overrides require a Pharmacist employee PIN (or an already signed-in Pharmacist employee); the Master Admin passcode is not accepted for dose logging. The Master Admin code is reserved and cannot be assigned as an employee PIN.
+- Employee sessions use Employee sign off to end access. The Lock admin buttons are hidden during employee sessions; signing off also locks admin.
