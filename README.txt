@@ -32,3 +32,19 @@ Admin tools
 - Passcode: 8522.
 - The admin page includes print dose history and clear dose history. Clearing history removes dose logs only and leaves medications intact.
 - IMPORTANT: This passcode is a client-side deterrent only. It is embedded in the website code and is not secure authentication. Do not use it to protect confidential resident health information.
+
+
+Latest updates (v7):
+- The Today page now has a Quick PRN dose button instead of Add medication. It opens a picker of existing PRN medications; medication creation stays on the Medications page.
+- The Next scheduled dose panel lists every medication whose next due time matches the earliest next-dose time.
+- The service worker cache version was updated to help browsers fetch the new files.
+
+Admin access currently uses the existing passcode 8522. A separate full-admin passcode has not been configured yet; choose one before adding the separate Basic Admin and Full Admin access levels.
+
+
+ADMIN ACCESS
+- Hidden gear icon opens the passcode screen.
+- Basic Admin passcode: 1707 (print and clear dose history).
+- Full Admin passcode: 8522 (basic tools plus medication/history navigation, export/import backup, and reset-all-local-data).
+- These are client-side passcodes in a static website and are not secure authentication. Do not use this prototype to protect confidential resident health information.
+- Exported backups include medication and dose-history data; store them securely.
