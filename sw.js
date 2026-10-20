@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medtrack-pwa-v10-role-permissions';
+const CACHE_NAME = 'medtrack-pwa-v11-pharmacist-exact-prn-times';
 const CORE_ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {

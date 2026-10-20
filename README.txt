@@ -16,3 +16,6 @@ Important limitations
 - These passcodes and role checks are implemented in client-side code on a static site. They are a basic workflow deterrent, not secure authentication. Anyone with access to the website source can inspect or bypass them.
 - Do not use this prototype as a real resident medication administration record or to protect confidential resident health information. Follow the prescription label and clinician/pharmacist instructions. The app's configured limit warnings are not medical advice.
 - To use PWA install/offline features, host the files over HTTPS (GitHub Pages supports HTTPS). Upload the contents of this folder, not the ZIP itself, with index.html at the repository root.
+
+New in this version
+- Rounded PRN display times no longer show the “exact time retained” note in the regular history. The Pharmacist panel now has an Exact PRN recording times section showing each rounded PRN entry’s original recorded timestamp and its rounded display time.
