@@ -1,50 +1,18 @@
-# KS Senior Rehab Center - MedTrack PWA starter
+KS Senior Rehab Center - MedTrack PWA
 
-This package turns the current Medtrack prototype into an installable Progressive Web App (PWA) shell.
+Included files
+- index.html: medication tracker prototype
+- manifest.webmanifest: installable app metadata
+- sw.js: service worker and app-shell cache
+- icons/: app icons
 
-## What's included
-- `index.html`: KS Senior Rehab Center - MedTrack interface and current local-browser tracking logic, including optional PRN dose-limit warnings
-- `manifest.webmanifest`: app name, appearance, and install icons
-- `sw.js`: service worker for caching the app shell
-- `icons/`: app icons
+Current role permissions
+- Pharmacy Technician passcode: 1707. Can view medication and dose history, print history, and adjust scheduled times for fixed-time or interval medications. Cannot add/delete medications, change medication name/dose/type/limits, or clear dose history.
+- Pharmacist passcode: 8522. Can add/edit/delete medications, clear dose history, import/export backups, and reset local app data.
+- When a PRN medication reaches a configured maximum in a rolling 24 hours or its minimum interval has not elapsed, the app requires the Pharmacist passcode before it will record a dose despite that configured limit.
 
-## Important limitations
-- This version still saves data in the browser on the current device. It does **not** sync between iPhone and computer yet.
-- The service worker and installation require the app to be served from HTTPS (or localhost during development); opening `index.html` directly as a file will not enable PWA installation/offline caching.
-- This is a prototype, not a clinically validated medication system. Keep following medication labels and clinician/pharmacist instructions. It does not make missed-dose decisions or provide dependable medication reminders.
-
-## How to try it on your computer
-1. Upload the contents of this folder to an HTTPS static host (not just the ZIP file).
-2. Open the hosted site in Chrome.
-3. Use the browser's install option if it appears.
-
-## How to add it on iPhone
-1. Host the app over HTTPS.
-2. Open the hosted URL in Safari on the iPhone.
-3. Tap Share, then **Add to Home Screen**.
-
-## Next step for shared iPhone/computer data
-To keep a single medication list and dose history across both devices, the app needs a secure backend with authentication, database access rules, and backups. This package does not yet contain that backend; do not put real sensitive medication data into a public or untrusted deployment.
-
-
-Admin tools
-- A subtle gear icon at the bottom-right opens the admin passcode prompt.
-- Passcode: 8522.
-- The admin page includes print dose history and clear dose history. Clearing history removes dose logs only and leaves medications intact.
-- IMPORTANT: This passcode is a client-side deterrent only. It is embedded in the website code and is not secure authentication. Do not use it to protect confidential resident health information.
-
-
-Latest updates (v7):
-- The Today page now has a Quick PRN dose button instead of Add medication. It opens a picker of existing PRN medications; medication creation stays on the Medications page.
-- The Next scheduled dose panel lists every medication whose next due time matches the earliest next-dose time.
-- The service worker cache version was updated to help browsers fetch the new files.
-
-Admin access currently uses the existing passcode 8522. A separate full-admin passcode has not been configured yet; choose one before adding the separate Basic Admin and Full Admin access levels.
-
-
-ADMIN ACCESS
-- Hidden gear icon opens the passcode screen.
-- Basic Admin passcode: 1707 (print and clear dose history).
-- Full Admin passcode: 8522 (basic tools plus medication/history navigation, export/import backup, and reset-all-local-data).
-- These are client-side passcodes in a static website and are not secure authentication. Do not use this prototype to protect confidential resident health information.
-- Exported backups include medication and dose-history data; store them securely.
+Important limitations
+- This app stores data in the browser on the current device. It does not sync between devices and does not provide dependable reminders.
+- These passcodes and role checks are implemented in client-side code on a static site. They are a basic workflow deterrent, not secure authentication. Anyone with access to the website source can inspect or bypass them.
+- Do not use this prototype as a real resident medication administration record or to protect confidential resident health information. Follow the prescription label and clinician/pharmacist instructions. The app's configured limit warnings are not medical advice.
+- To use PWA install/offline features, host the files over HTTPS (GitHub Pages supports HTTPS). Upload the contents of this folder, not the ZIP itself, with index.html at the repository root.
