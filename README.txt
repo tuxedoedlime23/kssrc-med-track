@@ -19,3 +19,10 @@ Important limitations
 
 New in this version
 - Rounded PRN display times no longer show the “exact time retained” note in the regular history. The Pharmacist panel now has an Exact PRN recording times section showing each rounded PRN entry’s original recorded timestamp and its rounded display time.
+
+New in this version
+- Pharmacist can create/remove employees with unique 4–8 digit employee PINs. Every scheduled or PRN dose record requires a valid employee PIN and stores the employee name in the history.
+- Pharmacy Technician and Pharmacist can choose a previous date on the Today page and record missed historical scheduled doses. The app asks for the actual time taken for a previous date rather than pretending it was logged today. Future dates are blocked.
+- A persistent Lock admin button appears while an admin session is unlocked, including when navigating to Medications or Dose history.
+- Rounded PRN entries store the rounding mode used at the time of recording, so the Pharmacist's Exact PRN Recording Times panel can continue to show exact and displayed times even if the medication's rounding setting later changes.
+- Employee PINs and all dose/medication data are stored in local browser storage only. They are not secure authentication and do not sync to other devices.
