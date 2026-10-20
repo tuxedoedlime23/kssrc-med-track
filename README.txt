@@ -26,3 +26,6 @@ New in this version
 - A persistent Lock admin button appears while an admin session is unlocked, including when navigating to Medications or Dose history.
 - Rounded PRN entries store the rounding mode used at the time of recording, so the Pharmacist's Exact PRN Recording Times panel can continue to show exact and displayed times even if the medication's rounding setting later changes.
 - Employee PINs and all dose/medication data are stored in local browser storage only. They are not secure authentication and do not sync to other devices.
+
+
+Latest update: Employee sign-in/sign-off now persists for a session, and each employee has a Pharmacist or Pharmacy Technician position. Pharmacists receive full admin access; Pharmacy Technicians receive basic admin access. Previous-day dose review and entry are now located on the Dose history page in the right-side panel.

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medtrack-pwa-v12-employee-pin-history';
+const CACHE_NAME = 'medtrack-pwa-v13-employee-session-roles-history';
 const CORE_ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
