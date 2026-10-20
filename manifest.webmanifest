@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "MedTrack Medication Tracker",
-  "short_name": "MedTrack",
-  "description": "A personal medication schedule and dose history tracker.",
+  "name": "KS Seinor Rehab Center - Medtrack",
+  "short_name": "Medtrack",
+  "description": "KS Seinor Rehab Center medication schedule and dose history tracker.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
