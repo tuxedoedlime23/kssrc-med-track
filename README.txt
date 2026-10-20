@@ -25,3 +25,10 @@ This package turns the current Medtrack prototype into an installable Progressiv
 
 ## Next step for shared iPhone/computer data
 To keep a single medication list and dose history across both devices, the app needs a secure backend with authentication, database access rules, and backups. This package does not yet contain that backend; do not put real sensitive medication data into a public or untrusted deployment.
+
+
+Admin tools
+- A subtle gear icon at the bottom-right opens the admin passcode prompt.
+- Passcode: 8522.
+- The admin page includes print dose history and clear dose history. Clearing history removes dose logs only and leaves medications intact.
+- IMPORTANT: This passcode is a client-side deterrent only. It is embedded in the website code and is not secure authentication. Do not use it to protect confidential resident health information.
