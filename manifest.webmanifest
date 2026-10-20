@@ -1,7 +1,7 @@
 {
   "id": "./",
   "name": "KS Senior Rehab Center - Medtrack",
-  "short_name": "Medtrack",
+  "short_name": "MedTrack",
   "description": "KS Senior Rehab Center medication schedule and dose history tracker.",
   "start_url": "./",
   "scope": "./",
