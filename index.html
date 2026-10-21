@@ -197,7 +197,7 @@ function nextDue(m){
  if(m.type==='interval'){let last=latestLog(m),step=Number(m.intervalHours)*3600000;return last?new Date(new Date(last.takenAt).getTime()+step):new Date(m.firstDue)}
  let now=new Date(),items=[];for(let offset=0;offset<3;offset++){let d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+offset);m.times.forEach(t=>{let p=parseTime(t),due=new Date(d.getFullYear(),d.getMonth(),d.getDate(),Math.floor(p/60),p%60);if(due>=now&&!logFor(keyFixed(m,dateKey(d),t)))items.push({due,time:t})})}items.sort((a,b)=>a.due-b.due);return items[0]?.due||null
 }
-function scheduleCards(list,nextPendingTime,now,emptyText,readOnly=false){return list.length?list.map(i=>{let log=logFor(i.key),future=new Date(i.due)>now,overdue=!log&&!future&&i.date===todayKey();const locked=!log&&future;const timingLabel=log?'Recorded':future?'Upcoming':overdue?'Overdue · click to log late dose':'Due';return `<article class="med" style="${log?'opacity:.76;background:#f8fbfb':''}"><div class="pill">💊</div><div><h3>${esc(i.med.name)}</h3><div class="meta">${esc(i.med.dose)} · ${i.mode==='fixed'?'Scheduled':'Interval dose'} ${esc(i.time)}</div>${log?`<div class="due" style="color:var(--green)">Recorded at ${esc(fmtTime(new Date(log.takenAt)))}${log.employeeName?' · by '+esc(log.employeeName):''}</div>`:`<div class="due">${future?'Not available until '+esc(fmtTime(new Date(i.due))):overdue?'Scheduled time passed. Check the box to record the actual administration time.':'Review this scheduled dose.'}</div>`}</div><div style="display:grid;justify-items:end;gap:8px"><span class="status ${log?'done':''}">${timingLabel}</span><input class="check" type="checkbox" aria-label="Record dose taken" data-key="${esc(i.key)}" ${log?'checked':''} ${(locked||readOnly)?'disabled':''} title="${readOnly?'Read-only historical view':future?'Cannot record before scheduled time':overdue?'Check to log the late dose':'Record dose'}"></div></article>`}).join(''):`<div class="empty">${esc(emptyText)}</div>`}
+function scheduleCards(list,nextPendingTime,now,emptyText,readOnly=false){return list.length?list.map(i=>{let log=logFor(i.key),future=new Date(i.due)>now,overdue=!log&&!future&&i.date===todayKey();const locked=!log&&future;const timingLabel=log?'Recorded':future?'Upcoming':overdue?'Overdue · click to log late dose':'Due';return `<article class="med" style="${log?'opacity:.76;background:#f8fbfb':''}"><div class="pill">💊</div><div><h3>${esc(i.med.name)}</h3><div class="meta">${esc(i.med.dose)} · ${i.mode==='fixed'?'Scheduled':'Interval dose'} ${esc(i.time)}</div>${log?`<div class="due" style="color:var(--green)">Recorded at ${esc(fmtTime(new Date(log.takenAt)))}${log.employeeName?' · by '+esc(log.employeeName):''}</div>`:`<div class="due">${future?'Not available until '+esc(fmtTime(new Date(i.due))):overdue?'Scheduled time passed. Check the box to record this as a late dose.':'Review this scheduled dose.'}</div>`}</div><div style="display:grid;justify-items:end;gap:8px"><span class="status ${log?'done':''}">${timingLabel}</span><input class="check" type="checkbox" aria-label="Record dose taken" data-key="${esc(i.key)}" ${log?'checked':''} ${(locked||readOnly)?'disabled':''} title="${readOnly?'Read-only historical view':future?'Cannot record before scheduled time':overdue?'Check to log the late dose':'Record dose'}"></div></article>`}).join(''):`<div class="empty">${esc(emptyText)}</div>`}
 function render(){
  const now=new Date();$('todayLabel').textContent=now.toLocaleDateString([],{weekday:'long',month:'short',day:'numeric',year:'numeric'});if(!$('scheduleDate').value)$('scheduleDate').value=todayKey();selectedDate=$('scheduleDate').value||todayKey();$('scheduleHeading').textContent="Today's schedule";
  let items=dueItemsForToday(todayKey()),historicalItems=selectedDate===todayKey()?[]:dueItemsForToday(selectedDate),done=items.filter(i=>logFor(i.key));$('progressText').textContent=done.length+' of '+items.length+' doses recorded';$('progressBar').style.width=(items.length?done.length/items.length*100:0)+'%';
@@ -388,16 +388,9 @@ function recordDose(checkbox){
   const now=new Date(),due=new Date(item.due);
   if(due>now){message('This dose cannot be recorded before its scheduled time.');render();return;}
   const employee=verifyEmployee();if(!employee){render();return;}
-  let takenAt=now.toISOString(),lateDose=false;
-  if(due<now){
-   const entered=window.prompt('This dose is overdue. Enter the actual time it was administered today (for example, 8:15 AM). Cancel if it was not administered.');
-   if(entered===null){render();return;}
-   const mins=parseTime(entered);
-   if(mins===null){alert('Time format not recognized. Use a time such as 8:15 AM. No dose was recorded.');render();return;}
-   const chosen=new Date(now.getFullYear(),now.getMonth(),now.getDate(),Math.floor(mins/60),mins%60);
-   if(chosen<due||chosen>now){alert('Enter an actual administration time between the scheduled time and now. No dose was recorded.');render();return;}
-   takenAt=chosen.toISOString();lateDose=true;
-  }
+  // Late doses are recorded at the moment they are entered; no manual time is required.
+  // The lateDose flag records that the scheduled time had already passed.
+  let takenAt=now.toISOString(),lateDose=due<now;
   const log={key,medId:item.med.id,medName:item.med.name,scheduledTime:item.time,takenAt,employeeId:employee.id,employeeName:employee.name,...(lateDose?{lateDose:true}:{})};
   deductInventory(item.med,log);state.logs.push(log);save();
   message((lateDose?'Late dose recorded: ':'Dose recorded: ')+item.med.name+' at '+fmtTime(new Date(log.takenAt))+'. Logged by '+employee.name+'.');
