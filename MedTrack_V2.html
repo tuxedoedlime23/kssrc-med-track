@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#245b63">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KS Senior Rehab Center - Medtrack">
+<title>MedTrack - KS Senior Rehab Center</title>
+<style>
+:root{--ink:#182f35;--muted:#647b80;--teal:#176b68;--teal-dark:#104d50;--teal2:#e0f2ef;--bg:#f3f7f6;--line:#dce8e5;--green:#24734d;--amber:#8b5d0b;--red:#a53b3b;--shadow:0 12px 34px #163d3b0d;--radius:20px}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top left,#e4f2ef 0,transparent 38%),var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #7fcac0;outline-offset:2px}button:hover{transform:translateY(-1px)}
+.app{max-width:1280px;margin:auto;padding:28px 24px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;padding:22px 24px;background:linear-gradient(120deg,#104d50,#176b68 62%,#27817b);color:#fff;border-radius:26px;box-shadow:0 16px 38px #104d5022}
+.brand{display:flex;align-items:center;gap:15px}.logo{display:grid;place-items:center;width:54px;height:54px;background:#ffffff20;border:1px solid #ffffff40;color:white;border-radius:17px;font-size:27px}.brand h1{font-size:clamp(19px,2.4vw,26px);letter-spacing:-.035em;margin:0}.brand p{margin:4px 0 0;color:#d7eeeb;font-size:13px}.date{color:#d7eeeb;font-size:13px;text-align:right}
+#installBtn{border-color:#ffffff70;background:#ffffff12;color:#fff}
+#adminSessionBar{background:#e2f3ed!important;border:1px solid #b8e0d1!important;color:#215d4b}
+.tabs{display:flex;gap:8px;margin:0 0 22px;padding:6px;background:#e6efed;border:1px solid #dbe7e4;border-radius:16px;overflow:auto;width:max-content;max-width:100%}
+.tab{border:0;background:transparent;color:#557075;padding:11px 17px;border-radius:11px;white-space:nowrap;font-weight:650}.tab.active{background:#fff;color:var(--teal-dark);box-shadow:0 2px 8px #163d3b12}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.8fr);gap:20px}.stack{display:grid;gap:20px;align-content:start}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}.card h2{font-size:19px;letter-spacing:-.02em;margin:0 0 5px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.next-card{background:linear-gradient(145deg,#104d50,#176b68 70%,#27817b);color:white;border-radius:var(--radius);padding:24px;box-shadow:0 14px 30px #104d5020}.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;opacity:.82;font-weight:750}.next-time{font-size:clamp(28px,4vw,38px);letter-spacing:-.04em;font-weight:800;margin:7px 0 10px}.next-card p{margin:0;color:#e0f0ee;font-size:14px}.next-details{color:#e0f0ee;font-size:13px;display:grid;gap:8px}.next-detail-item{padding-top:9px;border-top:1px solid #ffffff30}.next-detail-item:first-child{border-top:0;padding-top:0}.next-detail-item strong{display:block;color:#fff;font-size:14px}
+.quick-prn-options{display:grid;gap:10px}.quick-prn-option{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:13px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head h2{margin:0}
+.primary,.secondary,.danger{border-radius:12px;padding:10px 15px;border:1px solid var(--line);font-weight:700;font-size:13px}.primary{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:0 4px 10px #176b681c}.primary:hover{background:var(--teal-dark)}.secondary{background:#fff;color:var(--teal-dark)}.secondary:hover{background:#f0f7f5}.danger{background:#fff8f8;color:var(--red);border-color:#f0d2d2}
+.med-list,.history-list{display:grid;gap:12px}.med{border:1px solid var(--line);border-radius:16px;padding:15px;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:13px;background:#fff;transition:border-color .15s ease,box-shadow .15s ease}.med:hover{border-color:#b9d8d2;box-shadow:0 4px 15px #163d3b08}.pill{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:var(--teal2);font-size:21px}.med h3{font-size:15px;margin:1px 0 4px}.meta{font-size:12px;color:var(--muted)}.due{font-size:12px;color:var(--amber);margin-top:8px}.status{font-size:11px;font-weight:750;padding:5px 9px;border-radius:999px;background:#fff2d6;color:var(--amber);white-space:nowrap}.status.done{background:#e2f5e9;color:var(--green)}.check{width:24px;height:24px;accent-color:var(--teal);margin-top:3px}
+.history-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #edf1f0;padding-bottom:12px}.history-row:last-child{border-bottom:0;padding-bottom:0}.history-row strong{display:block;font-size:13px}.history-row span{font-size:12px;color:var(--muted)}
+.empty{border:1px dashed #cbdcd8;border-radius:15px;padding:25px;text-align:center;color:var(--muted);font-size:13px;background:#fbfdfc}.notice{font-size:12px;color:var(--muted);line-height:1.65;margin-top:18px}.hidden{display:none!important}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.date-review{justify-items:center;text-align:center}.date-review input{max-width:240px;text-align:center}.field label{font-size:12px;font-weight:750;color:#4d686d}.field input,.field select{width:100%;border:1px solid #d3e1de;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}.field input:focus,.field select:focus{border-color:#72b7ae;outline:3px solid #72b7ae24}.times-note{font-size:12px;color:var(--muted);margin-top:4px}.form-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:19px}
+.modal{position:fixed;inset:0;background:#102d30c9;backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px;z-index:10}.modal-box{background:white;border:1px solid #dce8e5;border-radius:24px;padding:25px;width:min(560px,100%);max-height:90vh;overflow:auto;box-shadow:0 24px 70px #09282a40}.modal-box h2{margin:0 0 6px;letter-spacing:-.025em}.alert{background:#fff6e4;border:1px solid #f0ddb3;padding:13px;border-radius:13px;font-size:13px;color:#704d0b;margin-bottom:15px}.pillnote{background:#edf6f4;padding:10px 13px;border-radius:12px;color:#315d5c;font-size:12px;border:1px solid #e0ece9}.form-actions .primary{min-width:125px}.admin-launch{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:15px;border:1px solid #c9d8d9;background:#e8f0f0;color:#456368;box-shadow:0 6px 18px #18393e20;opacity:.72;z-index:8;display:grid;place-items:center}.admin-launch:hover,.admin-launch:focus{opacity:1}.admin-panel{display:grid;gap:16px}.history-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:20px;align-items:start}.admin-actions{display:flex;gap:10px;flex-wrap:wrap}.passcode-input{font-size:24px;letter-spacing:.3em;text-align:center}.admin-count{font-size:30px;font-weight:800}
+@media print{body.print-history .admin-launch,body.print-history .modal{display:none!important}body.print-history{background:white}body.print-history .app> :not(#historyView){display:none!important}body.print-history #historyView{display:block!important;margin:0;padding:0}body.print-history #historyView .card{box-shadow:none;border:0;padding:0}body.print-history #historyView .sub{color:#444}body.print-history #historyView .history-layout>div{display:none!important}body.print-history .history-row{break-inside:avoid;border-bottom:1px solid #ccc;padding:8px 0}body.print-history .history-row span{color:#444}body.print-history .history-row strong{color:#000}}
+@media(max-width:760px){.app{padding:14px 12px 36px}.top{align-items:flex-start;padding:17px 15px;border-radius:20px}.brand{gap:11px}.logo{width:44px;height:44px;border-radius:13px}.brand h1{font-size:18px}.brand p{font-size:12px}.date{max-width:115px;font-size:11px}.grid,.history-layout{grid-template-columns:1fr;gap:14px}.stack{gap:14px}.card{padding:17px;border-radius:17px}.next-card{padding:20px;border-radius:17px}.tabs{width:100%;gap:4px}.tab{flex:1;padding:10px 12px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.next-time{font-size:30px}.med{grid-template-columns:auto 1fr auto;padding:13px;gap:10px}.status{grid-column:2;justify-self:start;grid-row:2}.check{grid-column:3;grid-row:1}.pill{grid-row:1/3}.section-head{align-items:flex-start}.section-head .primary{padding:9px 11px}.modal-box{padding:20px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
+<body><div class="app">
+<header class="top"><div class="brand"><div class="logo">✚</div><div><h1>Medication Tracker - KS Senior Rehab Center</h1><p>KS Senior Rehab Center · Medication management</p></div></div><div style="display:grid;justify-items:end;gap:6px"><button id="installBtn" class="secondary hidden" type="button">Install app</button><div class="date" id="todayLabel"></div></div></header>
+<div id="adminSessionBar" class="pillnote hidden" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-8px 0 14px"><span id="adminSessionText">Admin unlocked</span><button class="secondary" id="adminSessionLockBtn" type="button">🔒 Lock admin</button></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:-8px 0 14px;align-items:center"><button id="employeeSessionBtn" class="primary" type="button">Employee sign in</button><span id="employeeSessionStatus" class="pillnote hidden" aria-live="polite"></span><span id="storageStatus" class="pillnote" aria-live="polite">Checking local storage…</span></div><nav class="tabs"><button class="tab active" data-view="dashboard">Today</button><button class="tab" data-view="medications">Medications</button><button class="tab" data-view="history">Dose history</button></nav>
+<main id="dashboardView"><div class="grid"><div class="stack"><section class="card"><div class="section-head"><h2 id="scheduleHeading">Today's schedule</h2><button class="primary" id="quickPrnBtn" type="button">＋ Quick PRN dose</button></div><p class="sub">Record today's scheduled doses here. To enter a dose from an earlier date, open Dose history and use the Previous-day dose entry panel.</p><div id="recordFeedback" class="pillnote" aria-live="polite" style="display:none;margin-bottom:12px"></div><div id="todayList" class="med-list"></div></section></div><div class="stack"><section class="next-card"><div class="eyebrow">Next scheduled dose(s)</div><div class="next-time" id="nextTime">No doses scheduled</div><div id="nextDetail" class="next-details">Add a medication and its schedule to get started.</div></section><section class="card"><h2>Today's progress</h2><p class="sub">Based on doses scheduled for today</p><div style="font-size:28px;font-weight:750" id="progressText">0 of 0</div><div style="height:8px;background:#e8eeee;border-radius:99px;overflow:hidden;margin-top:12px"><div id="progressBar" style="height:100%;width:0;background:var(--teal)"></div></div></section><section class="card"><h2>Recent activity</h2><p class="sub">Your latest recorded doses</p><div id="recentList" class="history-list"></div></section></div></div></main>
+<main id="medicationsView" class="hidden"><section class="card"><div class="section-head"><h2>Your medications</h2><button class="primary hidden" id="addBtn2">＋ Add medication</button></div><p class="sub">Manage medication details and prescribed schedules.</p><div id="allMeds" class="med-list"></div></section></main>
+<main id="historyView" class="hidden">
+<div class="history-layout"><section class="card"><div class="section-head"><h2>Dose history</h2><button class="secondary" id="printHistoryBtn" type="button">Print history</button></div><p class="sub">Recorded doses, including the employee who logged each one.</p><div id="fullHistory" class="history-list"></div></section><div class="stack"><section class="card"><h2>Previous-day dose entry</h2><p class="sub">Pharmacy Technicians and Pharmacists can select a previous date here. The Today page stays focused on today's schedule.</p><div class="field date-review"><label for="scheduleDate">Select date to review</label><input id="scheduleDate" type="date"></div><p class="times-note">Future dates are not allowed. When you record a dose from a previous day, enter the actual time it was taken.</p><div id="historyDaySchedule" class="med-list" style="margin-top:14px"></div></section></div></div>
+</main>
+<main id="adminView" class="hidden"><section class="card"><div class="section-head"><div><h2 id="adminHeading">Pharmacy Technician</h2><p class="sub" id="adminLevelDescription">Limited schedule-time access</p></div><button class="secondary" id="adminExitBtn" type="button">Lock admin</button></div>
+<div class="admin-panel"><div class="pillnote">Dose history records stored on this device: <span id="adminHistoryCount" class="admin-count">0</span><br>Medications configured: <strong id="adminMedicationCount">0</strong></div>
+<section><h3 style="margin:0 0 8px">Administrative tools</h3><div class="admin-actions"><button class="secondary" id="adminOpenMedsBtn" type="button">Open medications</button><button class="secondary" id="adminOpenHistoryBtn" type="button">View dose history</button><button class="secondary" id="adminPrintHistoryBtn" type="button">Print dose history</button><button class="danger hidden" id="clearHistoryBtn" type="button">Clear dose history</button></div><p class="notice">Clearing history removes recorded dose entries from this browser. It does not delete your medication list. This action cannot be undone unless you have a separate record.</p></section>
+<section id="fullAdminTools" class="hidden" style="border-top:1px solid var(--line);padding-top:16px"><h3 style="margin:0 0 8px">Pharmacist controls</h3><p class="sub">Manage the medication list and local app data. These controls affect this browser only.</p><section style="border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px"><h3 style="margin:0 0 6px;font-size:16px">Employee PINs</h3><p class="sub">Create employee entries. A valid employee PIN is required before a dose can be recorded. PINs are stored locally in this browser. The Master Admin code cannot be used as an employee PIN or PRN-limit approval.</p><form id="employeeForm"><div class="form-grid"><div class="field"><label for="employeeName">Employee name</label><input id="employeeName" maxlength="80" placeholder="Employee name" required></div><div class="field"><label for="employeePin">Employee PIN (4–8 digits)</label><input id="employeePin" type="password" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" placeholder="Create PIN" required></div><div class="field full"><label for="employeeRole">Employee position</label><select id="employeeRole" required><option value="tech">Pharmacy Technician — basic admin rights</option><option value="pharmacist">Pharmacist — full admin rights</option></select></div></div><div class="form-actions"><button class="primary" type="submit">＋ Add employee</button></div><p id="employeeStatus" class="times-note" aria-live="polite"></p></form><div id="employeeList" class="history-list"></div></section><section style="border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px"><h3 style="margin:0 0 6px;font-size:16px">Exact PRN recording times</h3><p class="sub">When display-time rounding is enabled, the public history shows the rounded time. The original recorded timestamp is shown here for Pharmacist review.</p><div id="exactPrnTimes" class="history-list"></div></section><div class="admin-actions"><button class="primary" id="exportBackupBtn" type="button">Export full backup</button><button class="secondary" id="importBackupBtn" type="button">Import backup</button><input id="importBackupFile" type="file" accept="application/json,.json" class="hidden"><button class="danger" id="resetAppBtn" type="button">Reset all local app data</button></div><p class="notice">A backup contains the medication list and dose history. Store it securely and do not share it publicly. Importing replaces the current local data. Resetting removes all medications and history from this browser.</p></section>
+</div></section></main>
+<p class="notice"><b>Prototype safety note:</b> MedTrack saves locally in this browser and can sync shared app data to Supabase after an authorized administrator signs in. Sync availability depends on network access, account permissions, and Supabase configuration; this prototype does not send dependable reminders. Browser data may be lost if site data is cleared, so export secure backups regularly. Follow the prescription label and clinician/pharmacist instructions. Interval mode calculates a suggested next time from a recorded dose, but must only be used when that matches the prescribed instructions. PRN (as-needed) medications can be logged manually and are not scheduled by the app. Optional PRN limits can warn about a configured maximum in a rolling 24 hours or minimum interval; they are not a substitute for prescription instructions and do not decide when or how much medication to take.</p></div>
+<button class="admin-launch" id="adminLaunch" type="button" aria-label="Open admin passcode" title="Admin">⚙</button>
+<div id="employeeLoginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="employeeLoginTitle"><div class="modal-box"><h2 id="employeeLoginTitle">Employee sign in</h2><p class="sub">Enter your employee PIN once per work session. Your name will be attached to doses recorded until you sign off.</p><form id="employeeLoginForm"><div class="field"><label for="employeeLoginPin">Employee PIN</label><input class="passcode-input" id="employeeLoginPin" type="password" inputmode="numeric" pattern="[0-9]{4,8}" maxlength="8" autocomplete="off" required></div><p id="employeeLoginStatus" class="times-note" aria-live="polite"></p><div class="form-actions"><button class="secondary" id="employeeLoginCancel" type="button">Cancel</button><button class="primary" type="submit">Sign in</button></div></form></div></div>
+<div id="adminLoginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle"><div class="modal-box"><h2 id="adminLoginTitle">Administrator sign in</h2><p class="sub">Sign in with your authorized MedTrack administrator account.</p><form id="adminLoginForm"><div class="field"><label for="adminEmail">Email address</label><input id="adminEmail" type="email" autocomplete="username" required></div><div class="field" style="margin-top:12px"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required></div><p id="adminLoginStatus" class="times-note" aria-live="polite"></p><div class="form-actions"><button class="secondary" id="adminCancelBtn" type="button">Cancel</button><button class="primary" type="submit">Sign in</button></div></form></div></div>
+<div id="quickPrnModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="quickPrnTitle"><div class="modal-box"><h2 id="quickPrnTitle">Quick PRN dose</h2><p class="sub">Choose the as-needed medication you have already taken. The app will confirm before recording it.</p><div id="quickPrnOptions" class="quick-prn-options"></div><div class="form-actions"><button class="secondary" id="quickPrnClose" type="button">Close</button></div></div></div>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-box"><h2 id="modalTitle">Add medication</h2><p class="sub">Enter the schedule exactly as prescribed.</p><p id="saveStatus" class="times-note" aria-live="polite"></p>
+<div class="alert">Choose the schedule method that matches the prescription. Do not infer or change dose timing based on this app.</div>
+<form id="medForm" novalidate><div id="formStatus" class="alert hidden" role="alert" aria-live="polite"></div><div class="form-grid">
+<div class="field full" id="medNameField"><label for="medName">Medication name</label><input id="medName" required maxlength="80" placeholder="Medication name"></div>
+<div class="field" id="medDoseField"><label for="medDose">Dose / instructions label</label><input id="medDose" required maxlength="80" placeholder="e.g. 1 tablet"></div>
+<div class="field" id="scheduleTypeField"><label for="scheduleType">Schedule method</label><select id="scheduleType"><option value="fixed">Fixed times each day</option><option value="interval">Interval after recorded dose</option><option value="prn">As needed (PRN)</option></select></div>
+<div class="field full" id="fixedFields"><label for="medTimes">Scheduled times</label><input id="medTimes" placeholder="8:00 AM, 8:00 PM"><div class="times-note">Enter every prescribed daily time, separated by commas.</div></div>
+<div class="field hidden" id="intervalFields"><label for="intervalHours">Interval (hours)</label><input id="intervalHours" type="number" min="1" max="168" step="1" placeholder="e.g. 8"></div>
+<div class="field hidden" id="anchorField"><label for="firstDue">First scheduled dose</label><input id="firstDue" type="datetime-local"><div class="times-note">Used as the initial anchor until a dose is recorded.</div></div>
+<div class="field full hidden" id="prnFields"><h3 style="margin:4px 0 0;font-size:15px">Optional as-needed limits</h3><div class="times-note">Only enter limits that are explicitly on the prescription label or confirmed by a pharmacist/clinician. Leave blank if no limit is specified.</div><div class="form-grid"><div class="field"><label for="prnMaxDoses">Maximum doses in any 24 hours</label><input id="prnMaxDoses" type="number" min="1" max="99" step="1" placeholder="e.g. 6"></div><div class="field"><label for="prnMinHours">Minimum hours between doses</label><input id="prnMinHours" type="number" min="0.25" max="168" step="0.25" placeholder="e.g. 4"></div><div class="field full"><label for="prnTimeRounding">Optional display-time rounding</label><select id="prnTimeRounding"><option value="exact">Show exact recorded time</option><option value="nearest10">Round display to nearest 10 minutes</option><option value="up10">Always round display up to next 10 minutes</option><option value="down10">Always round display down to 10 minutes</option></select><div class="times-note">Only changes how this medication's time is displayed in Dose history and Recent activity. The exact timestamp is still saved and used for PRN limit warnings.</div></div></div></div>
+<div class="field full"><div class="pillnote" id="modeHelp">Fixed-time mode keeps the prescribed daily times unchanged even if a dose is recorded late.</div></div>
+</div><div class="form-actions"><button type="button" class="secondary" id="cancelBtn">Cancel</button><button type="button" class="primary" id="saveBtn">Save medication</button></div></form></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Initialize Supabase when its CDN library is available; the local app can still open if it is not.
+  if (window.supabase && typeof window.supabase.createClient === "function") {
+    window.medtrackSupabase = window.supabase.createClient(
+      "https://rcjfkmqgfjuzyouagvcv.supabase.co",
+      "sb_publishable_FAfo7_1O2arfPfq_-C8U6A_tTFjT8DA"
+    );
+  } else {
+    window.medtrackSupabase = null;
+    console.error("MedTrack: Supabase library did not load.");
+  }
+</script>
+
+ <script>
+(function(){
+const STORE='medtrack-prototype-v2';let state={meds:[],logs:[],employees:[]};try{const x=localStorage.getItem(STORE);if(x)state=JSON.parse(x)}catch(e){}if(!Array.isArray(state.meds))state.meds=[];if(!Array.isArray(state.logs))state.logs=[];if(!Array.isArray(state.employees))state.employees=[];state.employees.forEach(e=>{if(!e.role)e.role='tech'});
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0'),dateKey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),todayKey=()=>dateKey(new Date());let selectedDate=todayKey(),activeEmployee=null;
+const fmtTime=d=>d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),fmtDateTime=d=>d.toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+function displayLogTime(log,med){const d=new Date(log.takenAt);const mode=log.prnTimeRounding||(med&&med.type==='prn'?med.prnTimeRounding:'exact');if(!mode||mode==='exact')return fmtTime(d);const mins=d.getHours()*60+d.getMinutes();let rounded=mode==='nearest10'?Math.round(mins/10)*10:mode==='up10'?Math.ceil(mins/10)*10:mode==='down10'?Math.floor(mins/10)*10:mins;const shown=new Date(d);shown.setHours(0,rounded,0,0);return fmtTime(shown)}
+function displayRoundingNote(m){return ''}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function setStorageStatus(msg,ok=true){const el=$('storageStatus');if(el){el.textContent=msg;el.style.background=ok?'#e2f5e9':'#fff2d6';el.style.color=ok?'#24734d':'#8b5d0b'}}
+let cloudSyncEnabled=false, cloudSaveQueue=Promise.resolve(), cloudChannel=null;
+function save(){
+ let localOK=true;
+ try{localStorage.setItem(STORE,JSON.stringify(state));const check=localStorage.getItem(STORE);if(check!==JSON.stringify(state)){setStorageStatus('Could not verify browser save',false);localOK=false}}
+ catch(e){setStorageStatus('Browser storage unavailable',false);localOK=false}
+ if(cloudSyncEnabled){
+  const snapshot=JSON.parse(JSON.stringify(state));
+  cloudSaveQueue=cloudSaveQueue.then(async()=>{
+   const {data:{user}}=await window.medtrackSupabase.auth.getUser();
+   if(!user)throw new Error('Sign in to sync MedTrack.');
+   const {error}=await window.medtrackSupabase.from('medtrack_shared_state').upsert({id:'main',state:snapshot,updated_at:new Date().toISOString(),updated_by:user.id},{onConflict:'id'});
+   if(error)throw error;
+   setStorageStatus('Synced with Supabase',true);
+  }).catch(err=>{console.error('MedTrack cloud sync failed:',err);setStorageStatus('Saved on this device; cloud sync failed',false)});
+ }else if(localOK){setStorageStatus('Saved on this device · Sign in to sync',true)}
+ return localOK;
+}
+async function loadSharedState(){
+ const client=window.medtrackSupabase;
+ if(!client)throw new Error('Supabase did not load. Check your connection and refresh the page.');
+ const {data:verification,error:verifyError}=await client.functions.invoke('employee-pin-setup',{body:{}});
+ if(verifyError||!verification?.authorized)throw new Error(verification?.error||'Your account could not be verified for MedTrack sync.');
+ const {data:row,error}=await client.from('medtrack_shared_state').select('state').eq('id','main').maybeSingle();
+ if(error)throw error;
+ if(row&&row.state&&typeof row.state==='object'){
+  state={meds:Array.isArray(row.state.meds)?row.state.meds:[],logs:Array.isArray(row.state.logs)?row.state.logs:[],employees:Array.isArray(row.state.employees)?row.state.employees:[]};
+ }else{
+  // First-time cloud setup: seed Supabase from this browser's existing data instead of wiping it.
+  const {data:{user}}=await client.auth.getUser();
+  if(!user)throw new Error('Sign in again before enabling cloud sync.');
+  const initialState=JSON.parse(JSON.stringify(state));
+  const {error:insertError}=await client.from('medtrack_shared_state').insert({id:'main',state:initialState,updated_by:user.id});
+  if(insertError)throw insertError;
+  state=initialState;
+ }
+ state.employees.forEach(e=>{if(!e.role)e.role='tech'});
+ try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}
+ cloudSyncEnabled=true;
+ setStorageStatus('Synced with Supabase',true);
+ if(cloudChannel)client.removeChannel(cloudChannel);
+ cloudChannel=client.channel('medtrack-shared-state').on('postgres_changes',{event:'UPDATE',schema:'public',table:'medtrack_shared_state',filter:'id=eq.main'},payload=>{
+  if(!cloudSyncEnabled||!payload.new?.state)return;
+  const incoming=payload.new.state;
+  state={meds:Array.isArray(incoming.meds)?incoming.meds:[],logs:Array.isArray(incoming.logs)?incoming.logs:[],employees:Array.isArray(incoming.employees)?incoming.employees:[]};
+  try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}
+  render();renderEmployees();
+  setStorageStatus('Updated from another device',true);
+ }).subscribe();
+ render();renderEmployees();
+}
+function parseTime(s){let m=s.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);if(!m)return null;let h=+m[1],mi=+(m[2]||0),ap=m[3].toLowerCase();if(h<1||h>12||mi>59)return null;return (h%12+(ap==='pm'?12:0))*60+mi}
+function fmtMinutes(n){let h=Math.floor(n/60),m=n%60,ap=h>=12?'PM':'AM';return (h%12||12)+':'+pad(m)+' '+ap}
+function keyFixed(m,date,time){return m.id+'|fixed|'+date+'|'+time}
+function keyInterval(m,dueISO){return m.id+'|interval|'+dueISO}
+function logFor(key){return state.logs.find(l=>l.key===key)}
+function latestLog(m){return state.logs.filter(l=>l.medId===m.id).sort((a,b)=>new Date(b.takenAt)-new Date(a.takenAt))[0]}
+function dueItemsForToday(dayOverride){
+ const day=dayOverride||selectedDate||todayKey(),parts=day.split('-').map(Number),dayStart=new Date(parts[0],parts[1]-1,parts[2]),dayEnd=new Date(parts[0],parts[1]-1,parts[2]+1),items=[];
+ const historical=day!==todayKey();
+ state.meds.forEach(m=>{
+  if(m.type==='prn') return;
+  if(m.type==='fixed'){
+   (m.times||[]).forEach(t=>{const mins=parseTime(t);if(mins===null)return;const due=new Date(dayStart.getFullYear(),dayStart.getMonth(),dayStart.getDate(),Math.floor(mins/60),mins%60);items.push({med:m,time:t,due,key:keyFixed(m,day,t),date:day,mode:'fixed'});});
+  }else{
+   const hours=Number(m.intervalHours),step=hours*3600000;if(!hours||!step||!m.firstDue)return;
+   let cursor;
+   if(historical){cursor=new Date(m.firstDue);let guard=0;while(cursor<dayStart&&guard++<10000)cursor=new Date(cursor.getTime()+step);}
+   else {const last=latestLog(m);const anchor=last?new Date(new Date(last.takenAt).getTime()+step):new Date(m.firstDue);cursor=new Date(anchor);}
+   let guard=0;while(cursor<dayEnd&&guard++<80){if(cursor>=dayStart){const iso=cursor.toISOString();items.push({med:m,time:fmtTime(cursor),due:new Date(cursor),key:keyInterval(m,iso),date:day,mode:'interval'});}cursor=new Date(cursor.getTime()+step);}
+  }
+ });
+ return items.sort((a,b)=>a.due-b.due)
+}
+function nextDue(m){
+ if(m.type==='prn')return null;
+ if(m.type==='interval'){let last=latestLog(m),step=Number(m.intervalHours)*3600000;return last?new Date(new Date(last.takenAt).getTime()+step):new Date(m.firstDue)}
+ let now=new Date(),items=[];for(let offset=0;offset<3;offset++){let d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+offset);m.times.forEach(t=>{let p=parseTime(t),due=new Date(d.getFullYear(),d.getMonth(),d.getDate(),Math.floor(p/60),p%60);if(due>=now&&!logFor(keyFixed(m,dateKey(d),t)))items.push({due,time:t})})}items.sort((a,b)=>a.due-b.due);return items[0]?.due||null
+}
+function scheduleCards(list,nextPendingTime,now,emptyText){return list.length?list.map(i=>{let log=logFor(i.key),isNext=!log&&nextPendingTime!==null&&Math.abs(new Date(i.due).getTime()-nextPendingTime)<60000;return `<article class="med" style="${log?'opacity:.76;background:#f8fbfb':''}"><div class="pill">💊</div><div><h3>${esc(i.med.name)}</h3><div class="meta">${esc(i.med.dose)} · ${i.mode==='fixed'?'Scheduled':'Interval dose'} ${esc(i.time)}</div>${log?`<div class="due" style="color:var(--green)">Recorded at ${esc(fmtTime(new Date(log.takenAt)))}${log.employeeName?' · by '+esc(log.employeeName):''}</div>`:`<div class="due">${i.due<now?'Scheduled time has passed':'Upcoming scheduled dose'}</div>`}</div><div style="display:grid;justify-items:end;gap:8px">${log?'<span class="status done">Recorded</span>':isNext?'<span class="status">Next up</span>':'<span class="status">Not recorded</span>'}<input class="check" type="checkbox" aria-label="Record dose taken" data-key="${esc(i.key)}" ${log?'checked':''}></div></article>`}).join(''):`<div class="empty">${esc(emptyText)}</div>`}
+function render(){
+ const now=new Date();$('todayLabel').textContent=now.toLocaleDateString([],{weekday:'long',month:'short',day:'numeric',year:'numeric'});if(!$('scheduleDate').value)$('scheduleDate').value=todayKey();selectedDate=$('scheduleDate').value||todayKey();$('scheduleHeading').textContent="Today's schedule";
+ let items=dueItemsForToday(todayKey()),historicalItems=selectedDate===todayKey()?[]:dueItemsForToday(selectedDate),done=items.filter(i=>logFor(i.key));$('progressText').textContent=done.length+' of '+items.length+' doses recorded';$('progressBar').style.width=(items.length?done.length/items.length*100:0)+'%';
+ // Keep unchecked doses first in schedule order, with completed doses moved to the bottom.
+ items.sort((a,b)=>{const aDone=!!logFor(a.key),bDone=!!logFor(b.key);if(aDone!==bDone)return aDone?1:-1;return a.due-b.due});
+ const firstPending=items.find(i=>!logFor(i.key));
+ const nextPendingTime=firstPending?new Date(firstPending.due).getTime():null;
+ let candidates=state.meds.map(m=>({med:m,due:nextDue(m)})).filter(x=>x.due && !Number.isNaN(new Date(x.due).getTime())).sort((a,b)=>a.due-b.due),next=candidates[0];
+ const sameTime=next?candidates.filter(x=>Math.abs(new Date(x.due).getTime()-new Date(next.due).getTime())<60000):[];
+ $('nextTime').textContent=next?fmtDateTime(next.due):'No doses scheduled';
+ $('nextDetail').innerHTML=next?sameTime.map(x=>`<div class="next-detail-item"><strong>${esc(x.med.name)}</strong>${esc(x.med.dose)} · ${x.med.type==='fixed'?'Fixed daily schedule':'Every '+esc(x.med.intervalHours)+' hours'}</div>`).join(''):'Add a medication and its schedule to get started.';
+ const scheduleMarkup=scheduleCards(items,nextPendingTime,now,'No doses scheduled for today. Add a medication or check the next-dose panel for interval schedules.');$('todayList').innerHTML=scheduleMarkup;const historicalPanel=$('historyDaySchedule');if(historicalPanel)historicalPanel.innerHTML=selectedDate===todayKey()?'<div class="empty">Choose a previous date above to review or record earlier doses.</div>':scheduleCards(historicalItems,null,now,'No doses scheduled for this date.');
+ $('allMeds').innerHTML=state.meds.length?state.meds.map(m=>`<article class="med"><div class="pill">💊</div><div><h3>${esc(m.name)}</h3><div class="meta">${esc(m.dose)}</div><div class="due">${m.type==='prn'?'As needed (PRN) · Not scheduled'+(m.maxDoses24h?' · Max '+esc(m.maxDoses24h)+' doses/24h':'')+(m.minIntervalHours?' · At least '+esc(m.minIntervalHours)+'h between doses':''):m.type==='fixed'?'Fixed daily times: '+(m.times||[]).map(esc).join(', '):'Every '+esc(m.intervalHours)+' hours · Next: '+(nextDue(m)?esc(fmtDateTime(nextDue(m))):'not set')}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${m.type==='prn'?`<button class="secondary" data-prn="${esc(m.id)}">Record dose</button>`:''}${(adminLevel==='full'||(adminLevel==='basic'&&m.type!=='prn'))?`<button class="secondary" data-edit="${esc(m.id)}">${adminLevel==='basic'?'Edit time':'Edit'}</button>`:''}${adminLevel==='full'?`<button class="danger" data-delete="${esc(m.id)}">Delete</button>`:''}</div></article>`).join(''):'<div class="empty">No medications added yet.</div>';
+ const logs=[...state.logs].sort((a,b)=>new Date(b.takenAt)-new Date(a.takenAt));
+ const history=logs.length?logs.map(l=>{let m=state.meds.find(x=>x.id===l.medId);return `<div class="history-row"><div><strong>${esc(m?m.name:l.medName||'Medication')}</strong><span>${esc(m?m.dose:'Dose record')} · ${esc(l.scheduledTime||l.time||'Recorded dose')}${l.employeeName?' · Logged by '+esc(l.employeeName):''}</span></div><div style="text-align:right"><strong>${esc(displayLogTime(l,m))}</strong><span>${esc(displayRoundingNote(m)||new Date(l.takenAt).toLocaleDateString([],{month:'short',day:'numeric'}))}</span></div></div>`}).join(''):'<div class="empty">No doses recorded yet. Checked-off doses will appear here.</div>';
+ $('fullHistory').innerHTML=history;$('adminHistoryCount').textContent=state.logs.length;const roundedPrnLogs=logs.filter(l=>{const m=state.meds.find(x=>x.id===l.medId);return (l.prnTimeRounding&&l.prnTimeRounding!=='exact')||(m&&m.type==='prn'&&m.prnTimeRounding&&m.prnTimeRounding!=='exact')});$('exactPrnTimes').innerHTML=roundedPrnLogs.length?roundedPrnLogs.map(l=>{const m=state.meds.find(x=>x.id===l.medId);return `<div class="history-row"><div><strong>${esc(m?m.name:(l.medName||'Medication'))}</strong><span>Exact recorded timestamp · ${esc(l.scheduledTime||'As needed (PRN)')}${l.employeeName?' · Logged by '+esc(l.employeeName):''}</span></div><div style="text-align:right"><strong>${esc(fmtDateTime(new Date(l.takenAt)))}</strong><span>Displayed as ${esc(displayLogTime(l,m))} · ${esc(new Date(l.takenAt).toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'}))}</span></div></div>`}).join(''):'<div class="empty">No rounded PRN dose records. Exact timestamps will appear here when a PRN medication uses display-time rounding.</div>';$('recentList').innerHTML=logs.length?logs.slice(0,4).map(l=>{let m=state.meds.find(x=>x.id===l.medId);return `<div class="history-row"><div><strong>${esc(m?m.name:l.medName||'Medication')}</strong><span>${esc(l.scheduledTime||l.time||'Recorded dose')}${l.employeeName?' · '+esc(l.employeeName):''}</span></div><div style="text-align:right"><strong>${esc(displayLogTime(l,m))}</strong><span>${esc(new Date(l.takenAt).toLocaleDateString([],{month:'short',day:'numeric'}))}</span></div></div>`}).join(''):'<div class="empty">Your recorded doses will show up here.</div>';
+}
+function view(v){['dashboard','medications','history','admin'].forEach(x=>$(x+'View').classList.toggle('hidden',x!==v));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===v))}
+function openAdminLogin(){$('adminEmail').value='';$('adminPassword').value='';$('adminLoginStatus').textContent='';$('adminLoginModal').classList.remove('hidden');$('adminEmail').focus()}
+function updateAdminLockUI(){const employeeMode=!!activeEmployee;$('adminSessionBar').classList.toggle('hidden',!adminLevel||employeeMode);$('adminExitBtn').classList.toggle('hidden',employeeMode)}
+function lockAdmin(){adminLevel=null;selectedDate=todayKey();$('scheduleDate').value=selectedDate;$('addBtn2').classList.add('hidden');$('clearHistoryBtn').classList.add('hidden');$('adminSessionBar').classList.add('hidden');$('adminExitBtn').classList.add('hidden');render();view('dashboard')}
+let adminLevel=null;
+function unlockAdmin(level){adminLevel=level;$('adminLoginModal').classList.add('hidden');$('adminSessionText').textContent='Master Admin session active';$('adminHistoryCount').textContent=state.logs.length;$('adminMedicationCount').textContent=state.meds.length;const full=level==='full';$('adminHeading').textContent=full?'Pharmacist':'Pharmacy Technician';$('adminLevelDescription').textContent=full?'Full site access · Master Admin':'Employee-based limited access; advanced changes require a Pharmacist';$('fullAdminTools').classList.toggle('hidden',!full);$('clearHistoryBtn').classList.toggle('hidden',!full);$('addBtn2').classList.toggle('hidden',!full);updateAdminLockUI();renderEmployees();render();view('admin')}
+function printHistory(){document.body.classList.add('print-history');view('history');const cleanup=()=>{document.body.classList.remove('print-history');window.removeEventListener('afterprint',cleanup);};window.addEventListener('afterprint',cleanup);window.print();setTimeout(cleanup,1200)}
+function clearHistory(){if(adminLevel!=='full'){alert('Only a Pharmacist can clear dose history.');return}if(!state.logs.length){alert('There are no dose history records to clear.');return;}if(!confirm('Clear ALL dose history records from this browser? Your medication list will remain. This cannot be undone.'))return;state.logs=[];save();render();$('adminHistoryCount').textContent=state.logs.length;alert('Dose history has been cleared. Your medications were not changed.')}
+
+function verifyEmployee(){
+ if(activeEmployee)return activeEmployee;
+ alert('Please use Employee sign in at the top of the page before recording a dose. You only need to sign in once, then sign off when finished.');
+ return null;
+}
+function updateEmployeeSessionUI(){const btn=$('employeeSessionBtn'),status=$('employeeSessionStatus');if(activeEmployee){btn.textContent='Employee sign off';btn.className='secondary';status.textContent=activeEmployee.name+' · '+(activeEmployee.role==='pharmacist'?'Pharmacist':'Pharmacy Technician');status.classList.remove('hidden')}else{btn.textContent='Employee sign in';btn.className='primary';status.textContent='';status.classList.add('hidden')}updateAdminLockUI()}
+function signOutEmployee(){activeEmployee=null;lockAdmin();updateEmployeeSessionUI();view('dashboard')}
+function historicalTakenAt(item){
+ if(item.date===todayKey())return new Date().toISOString();
+ const entered=window.prompt('This is a previous date ('+item.date+'). Enter the actual time the dose was taken (for example, 8:05 AM).');if(entered===null)return null;const mins=parseTime(entered);if(mins===null){alert('Time format not recognized. Use a time such as 8:05 AM. No dose was recorded.');return null;}const parts=item.date.split('-').map(Number);return new Date(parts[0],parts[1]-1,parts[2],Math.floor(mins/60),mins%60).toISOString();
+}
+function renderEmployees(){const list=$('employeeList');if(!list)return;list.innerHTML=state.employees.length?state.employees.map(e=>`<div class="history-row"><div><strong>${esc(e.name)}</strong><span>${e.role==='pharmacist'?'Pharmacist · Full admin rights':'Pharmacy Technician · Basic admin rights'} · Employee PIN configured</span></div><button class="danger" type="button" data-remove-employee="${esc(e.id)}">Remove</button></div>`).join(''):'<div class="empty">No employees yet. Add an employee above before recording doses.</div>';}
+$('employeeForm').addEventListener('submit',e=>{e.preventDefault();if(adminLevel!=='full'){alert('Only a Pharmacist can create employees.');return;}const name=$('employeeName').value.trim(),pin=$('employeePin').value.trim(),role=$('employeeRole').value;if(!name||!/^\d{4,8}$/.test(pin)){$('employeeStatus').textContent='Enter a name and a PIN containing 4–8 digits.';return;}if(pin==='8522'){$('employeeStatus').textContent='8522 is reserved for Master Admin and cannot be used as an employee PIN.';return;}if(state.employees.some(x=>String(x.pin)===pin)){$('employeeStatus').textContent='That PIN is already assigned. Choose a unique PIN.';return;}state.employees.push({id:'emp-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,pin,role});save();$('employeeForm').reset();$('employeeStatus').textContent='Employee added.';renderEmployees();});
+function openQuickPrn(){
+ const prnMeds=state.meds.filter(m=>m.type==='prn');
+ const options=$('quickPrnOptions');
+ if(!prnMeds.length){
+  if(confirm('There are no as-needed medications set up yet. Go to Medications to add one?')){view('medications');open();$('scheduleType').value='prn';syncFields();}
+  return;
+ }
+ options.innerHTML=prnMeds.map(m=>`<div class="quick-prn-option"><div><strong>${esc(m.name)}</strong><div class="meta">${esc(m.dose)}${m.maxDoses24h?' · Max '+esc(m.maxDoses24h)+' doses/24h':''}${m.minIntervalHours?' · At least '+esc(m.minIntervalHours)+'h between doses':''}</div></div><button class="primary" type="button" data-prn="${esc(m.id)}">Record dose</button></div>`).join('');
+ $('quickPrnModal').classList.remove('hidden');
+}
+let editingMedicationId=null;
+function open(){ if(adminLevel!=='full'){alert('Only a Pharmacist can add a medication. Unlock Pharmacist access first.');return} editingMedicationId=null;$('modalTitle').textContent='Add medication';$('saveBtn').textContent='Save medication';$('formStatus').classList.add('hidden');$('formStatus').textContent='';$('saveStatus').textContent='';$('medForm').reset();syncFields();$('modal').classList.remove('hidden');$('medName').focus()}
+function editMedication(id){
+ const m=state.meds.find(x=>x.id===id);if(!m)return;
+ if(adminLevel!=='basic'&&adminLevel!=='full'){alert('Unlock Pharmacy Technician or Pharmacist access to edit a medication.');openAdminLogin();return}
+ if(adminLevel==='basic'&&m.type==='prn'){alert('Pharmacy Technicians can adjust scheduled medication times only. PRN settings require Pharmacist approval.');return}
+ editingMedicationId=id;$('modalTitle').textContent=adminLevel==='basic'?'Edit scheduled time (Pharmacy Technician)':'Edit medication';$('saveBtn').textContent=adminLevel==='basic'?'Save time changes':'Save changes';$('formStatus').classList.add('hidden');$('formStatus').textContent='';$('saveStatus').textContent=adminLevel==='basic'?'Only the scheduled time can be changed. Medication name, dose, schedule type, and limits are locked.':'Update the details to match the prescription label.';$('medName').value=m.name||'';$('medDose').value=m.dose||'';$('scheduleType').value=m.type||'fixed';$('medTimes').value=m.type==='fixed'?(m.times||[]).join(', '):'';$('intervalHours').value=m.intervalHours||'';$('firstDue').value=m.firstDue?(()=>{const d=new Date(m.firstDue);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())})():'';$('prnMaxDoses').value=m.maxDoses24h??'';$('prnMinHours').value=m.minIntervalHours??'';$('prnTimeRounding').value=m.prnTimeRounding||'exact';syncFields();applyRoleToForm();$('modal').classList.remove('hidden');if(adminLevel==='basic')$('medTimes').focus();else $('medName').focus()
+}
+function applyRoleToForm(){const tech=adminLevel==='basic';['medNameField','medDoseField','scheduleTypeField'].forEach(id=>$(id).classList.toggle('hidden',tech));$('prnFields').classList.toggle('hidden',tech||$('scheduleType').value!=='prn');$('intervalFields').classList.toggle('hidden',tech||$('scheduleType').value!=='interval');$('fixedFields').classList.toggle('hidden',$('scheduleType').value!=='fixed');$('anchorField').classList.toggle('hidden',$('scheduleType').value!=='interval');if(tech){$('medName').disabled=true;$('medDose').disabled=true;$('scheduleType').disabled=true;$('intervalHours').disabled=true;$('prnMaxDoses').disabled=true;$('prnMinHours').disabled=true;$('prnTimeRounding').disabled=true;$('medTimes').disabled=$('scheduleType').value!=='fixed';$('firstDue').disabled=$('scheduleType').value!=='interval';}else{['medName','medDose','scheduleType','intervalHours','prnMaxDoses','prnMinHours','prnTimeRounding','medTimes','firstDue'].forEach(id=>$(id).disabled=false)}}
+function close(){ $('modal').classList.add('hidden');$('medForm').reset();$('formStatus').classList.add('hidden');$('formStatus').textContent='';editingMedicationId=null;syncFields()}
+function syncFields(){let type=$('scheduleType').value,fixed=type==='fixed',interval=type==='interval',prn=type==='prn';$('fixedFields').classList.toggle('hidden',!fixed);$('intervalFields').classList.toggle('hidden',!interval);$('anchorField').classList.toggle('hidden',!interval);$('prnFields').classList.toggle('hidden',!prn);$('medTimes').required=fixed;$('intervalHours').required=interval;$('firstDue').required=interval;$('modeHelp').textContent=fixed?'Fixed-time mode keeps the prescribed daily times unchanged even if a dose is recorded late.':interval?'Interval mode calculates the next suggested time from the last recorded dose. Only choose this if it matches the prescribed instructions.':'As-needed (PRN) medications will not appear as scheduled doses. Optional limits can warn about configured prescription limits; they do not determine whether a dose is appropriate.';applyRoleToForm()}
+$('addBtn2').onclick=open;$('quickPrnBtn').onclick=openQuickPrn;$('quickPrnClose').onclick=()=>$('quickPrnModal').classList.add('hidden');$('quickPrnModal').addEventListener('click',e=>{if(e.target===$('quickPrnModal'))$('quickPrnModal').classList.add('hidden')});$('cancelBtn').onclick=close;$('scheduleType').onchange=syncFields;document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>view(b.dataset.view));$('adminLaunch').onclick=()=>{if(adminLevel)view('admin');else openAdminLogin()};$('adminCancelBtn').onclick=()=>$('adminLoginModal').classList.add('hidden');$('adminLoginModal').addEventListener('click',e=>{if(e.target===$('adminLoginModal'))$('adminLoginModal').classList.add('hidden')});$('adminLoginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const status = $('adminLoginStatus');
+  const button = $('adminLoginForm').querySelector('button[type="submit"]');
+  status.textContent = 'Signing in...';
+  button.disabled = true;
+  try {
+    if (!window.medtrackSupabase) {
+      status.textContent = 'Supabase did not load. Refresh the page and try again.';
+      return;
+    }
+    const { data, error } = await window.medtrackSupabase.auth.signInWithPassword({
+      email: $('adminEmail').value.trim(),
+      password: $('adminPassword').value
+    });
+    if (error || !data.user) {
+      status.textContent = 'Sign-in failed. Check your email and password.';
+      return;
+    }
+    const { data: verification, error: verifyError } =
+      await window.medtrackSupabase.functions.invoke('employee-pin-setup', { body: {} });
+    if (verifyError || !verification?.authorized) {
+      await window.medtrackSupabase.auth.signOut();
+      status.textContent = verification?.error ||
+        'Administrator verification failed. No admin access was granted.';
+      return;
+    }
+    await loadSharedState();
+    $('adminPassword').value = '';
+    unlockAdmin('full');
+    $('adminSessionText').textContent = 'Verified administrator session · Cloud sync enabled';
+  } catch (err) {
+    console.error('Admin sign-in error:', err);
+    status.textContent = 'Could not contact Supabase. Please try again.';
+  } finally {
+    button.disabled = false;
+  }
+});$('adminExitBtn').onclick=lockAdmin;$('adminSessionLockBtn').onclick=lockAdmin;
+$('employeeSessionBtn').onclick=()=>{if(activeEmployee){if(confirm('Sign off '+activeEmployee.name+'? Dose recording will require another employee sign-in.'))signOutEmployee();return;}$('employeeLoginPin').value='';$('employeeLoginStatus').textContent='';$('employeeLoginModal').classList.remove('hidden');$('employeeLoginPin').focus()};
+$('employeeLoginCancel').onclick=()=>$('employeeLoginModal').classList.add('hidden');$('employeeLoginModal').addEventListener('click',e=>{if(e.target===$('employeeLoginModal'))$('employeeLoginModal').classList.add('hidden')});
+$('employeeLoginForm').addEventListener('submit',e=>{e.preventDefault();const pin=$('employeeLoginPin').value.trim(),employee=pin==='8522'?null:state.employees.find(x=>String(x.pin)===pin&&String(x.pin)!=='8522');if(!employee){$('employeeLoginStatus').textContent='Employee PIN not recognized. Please try again.';$('employeeLoginPin').select();return;}activeEmployee=employee;$('employeeLoginModal').classList.add('hidden');updateEmployeeSessionUI();const employeeAccess=employee.role==='pharmacist'?'full':'basic';unlockAdmin(employeeAccess);view('dashboard');$('adminSessionText').textContent=employee.name+' signed in · '+(employee.role==='pharmacist'?'Pharmacist':'Pharmacy Technician');});$('clearHistoryBtn').onclick=clearHistory;$('adminPrintHistoryBtn').onclick=printHistory;$('printHistoryBtn').onclick=printHistory;
+$('adminOpenMedsBtn').onclick=()=>view('medications');$('adminOpenHistoryBtn').onclick=()=>view('history');
+$('exportBackupBtn').onclick=()=>{const backup={format:'medtrack-backup-v1',exportedAt:new Date().toISOString(),data:state};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='medtrack-backup-'+dateKey(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);};
+$('importBackupBtn').onclick=()=>{$('importBackupFile').value='';$('importBackupFile').click()};
+$('importBackupFile').addEventListener('change',async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;try{const parsed=JSON.parse(await file.text());const data=parsed&&parsed.data?parsed.data:parsed;if(!data||!Array.isArray(data.meds)||!Array.isArray(data.logs))throw new Error('The file does not look like a MedTrack backup.');if(!confirm('Importing this backup will replace the current medication list and dose history on this browser. Continue?'))return;state={meds:data.meds,logs:data.logs,employees:Array.isArray(data.employees)?data.employees:[]};if(!save())throw new Error('The browser could not save the imported data.');render();$('adminHistoryCount').textContent=state.logs.length;$('adminMedicationCount').textContent=state.meds.length;alert('Backup imported.');}catch(err){alert('Could not import backup: '+err.message)}});
+$('resetAppBtn').onclick=()=>{if(adminLevel!=='full')return;if(!confirm('Reset ALL local MedTrack data, including medications and dose history? This cannot be undone. Export a backup first if needed.'))return;if(!confirm('Final confirmation: permanently clear all medications and dose history from this browser?'))return;state={meds:[],logs:[],employees:[]};save();render();renderEmployees();$('adminHistoryCount').textContent='0';$('adminMedicationCount').textContent='0';alert('Local app data has been reset.');};
+syncFields();
+function saveMedication(){
+ const status=$('formStatus');
+ const showError=msg=>{status.textContent=msg;status.classList.remove('hidden')};
+ status.textContent='';status.classList.add('hidden');
+ try {
+  if(adminLevel==='basic'){
+   if(!editingMedicationId){showError('Pharmacy Technicians cannot add medications. Ask a Pharmacist.');return}
+   const existing=state.meds.find(x=>x.id===editingMedicationId);if(!existing||existing.type==='prn'){showError('Pharmacy Technicians may only change scheduled times for fixed or interval medications.');return}
+   if(existing.type==='fixed'){const raw=$('medTimes').value.split(',').map(x=>x.trim()).filter(Boolean);if(!raw.length){showError('Enter at least one prescribed scheduled time.');$('medTimes').focus();return}let times=[];for(let t of raw){let mins=parseTime(t);if(mins===null){showError('Time format not recognized. Use a format such as 8:00 AM, 12:30 PM, or 8 PM.');$('medTimes').focus();return}let normalized=fmtMinutes(mins);if(!times.includes(normalized))times.push(normalized)}times.sort((a,b)=>parseTime(a)-parseTime(b));existing.times=times;}else{const first=$('firstDue').value;if(!first||isNaN(new Date(first).getTime())){showError('Please enter the first scheduled date and time.');$('firstDue').focus();return}existing.firstDue=new Date(first).toISOString()}if(!save()){showError('Could not save the schedule time change.');return}render();close();alert('Scheduled time updated. Medication details and limits were not changed.');return;
+  }
+  if(adminLevel!=='full'){showError('Unlock Pharmacist access before adding or editing medication details.');return}
+  let name=$('medName').value.trim(),dose=$('medDose').value.trim(),type=$('scheduleType').value;
+  if(!name){showError('Please enter the medication name.');$('medName').focus();return}
+  if(!dose){showError('Please enter the dose or instruction label.');$('medDose').focus();return}
+  let med={id:editingMedicationId||Date.now().toString(36)+Math.random().toString(36).slice(2,7),name,dose,type};
+  if(type==='prn'){
+   const maxRaw=$('prnMaxDoses').value.trim(),hoursRaw=$('prnMinHours').value.trim();
+   if(maxRaw){const max=Number(maxRaw);if(!Number.isInteger(max)||max<1||max>99){showError('Enter a whole-number maximum from 1 to 99 doses in any 24 hours, or leave blank.');$('prnMaxDoses').focus();return}med.maxDoses24h=max}
+   if(hoursRaw){const hours=Number(hoursRaw);if(!Number.isFinite(hours)||hours<0.25||hours>168){showError('Enter a minimum interval from 0.25 to 168 hours, or leave blank.');$('prnMinHours').focus();return}med.minIntervalHours=hours}
+   med.prnTimeRounding=$('prnTimeRounding').value||'exact';
+   med.prn=true;
+  } else if(type==='fixed'){
+   let raw=$('medTimes').value.split(',').map(x=>x.trim()).filter(Boolean);
+   if(!raw.length){showError('Please enter at least one scheduled time, such as 8:00 AM.');$('medTimes').focus();return}
+   let times=[];
+   for(let t of raw){
+    let mins=parseTime(t);
+    if(mins===null){showError('Time format not recognized. Use a format such as 8:00 AM, 12:30 PM, or 8 PM.');$('medTimes').focus();return}
+    let normalized=fmtMinutes(mins);if(!times.includes(normalized))times.push(normalized);
+   }
+   times.sort((a,b)=>parseTime(a)-parseTime(b));med.times=times;
+  } else {
+   let h=Number($('intervalHours').value),first=$('firstDue').value;
+   if(!Number.isInteger(h)||h<1||h>168){showError('Enter a whole-number interval from 1 to 168 hours.');$('intervalHours').focus();return}
+   if(!first||isNaN(new Date(first).getTime())){showError('Please enter the first scheduled date and time.');$('firstDue').focus();return}
+   med.intervalHours=h;med.firstDue=new Date(first).toISOString();
+  }
+  if(editingMedicationId){const index=state.meds.findIndex(x=>x.id===editingMedicationId);if(index<0){showError('Could not find this medication. Close this window and try again.');return}state.meds[index]=med;}else{state.meds.push(med)}
+  save();
+  render();
+  view('medications');
+  close();
+  $('saveStatus') && ($('saveStatus').textContent='Medication saved.');
+ } catch(err) {
+  console.error('MedTrack save error:',err);
+  showError('Something went wrong while saving. Try refreshing the page. If this repeats, open Chrome DevTools (F12) and check Console for the error.');
+ }
+}
+$('saveBtn').addEventListener('click',saveMedication);
+$('medForm').addEventListener('submit',e=>{e.preventDefault();saveMedication()});
+
+
+function recordPrnDose(id){
+ const employee=verifyEmployee();if(!employee)return;
+ const med=state.meds.find(m=>m.id===id);if(!med||med.type!=='prn')return;
+ const now=new Date(),nowMs=now.getTime(),recent=state.logs.filter(l=>l.medId===med.id&&Number.isFinite(new Date(l.takenAt).getTime())&&nowMs-new Date(l.takenAt).getTime()>=0&&nowMs-new Date(l.takenAt).getTime()<24*3600000);
+ const last=state.logs.filter(l=>l.medId===med.id&&Number.isFinite(new Date(l.takenAt).getTime())).sort((a,b)=>new Date(b.takenAt)-new Date(a.takenAt))[0];
+ const warnings=[];
+ if(med.maxDoses24h&&recent.length>=Number(med.maxDoses24h))warnings.push('The configured maximum of '+med.maxDoses24h+' doses in the past 24 hours has already been reached.');
+ if(med.minIntervalHours&&last){const elapsed=(nowMs-new Date(last.takenAt).getTime())/3600000;if(elapsed>=0&&elapsed<Number(med.minIntervalHours)){const allowedAt=new Date(new Date(last.takenAt).getTime()+Number(med.minIntervalHours)*3600000);warnings.push('The configured minimum interval is '+med.minIntervalHours+' hours. The interval from the last recorded dose has not elapsed (about '+Math.ceil((Number(med.minIntervalHours)-elapsed)*60)+' minutes remain; '+fmtTime(allowedAt)+').')}}
+ let confirmText='Record a dose of '+med.name+' taken now? Confirm only after the dose has actually been taken.';
+ let approvedBy=null;if(warnings.length){alert('LIMIT WARNING for '+med.name+':\n\n'+warnings.join('\n')+'\n\nA Pharmacist employee must approve this override. The Master Admin code is not accepted for dose logging. Follow the prescription label and contact a pharmacist/clinician if unsure.');if(activeEmployee&&activeEmployee.role==='pharmacist'){approvedBy=activeEmployee;}else{const approval=window.prompt('PHARMACIST APPROVAL REQUIRED\nEnter a Pharmacist employee PIN (not the Master Admin code) to authorize recording despite the limit:');if(approval===null){alert('Pharmacist approval was canceled. No dose was recorded.');return}approvedBy=state.employees.find(x=>String(x.pin)===String(approval).trim()&&String(x.pin)!=='8522'&&x.role==='pharmacist')||null;}if(!approvedBy){alert('A valid Pharmacist employee PIN was not provided. The Master Admin code is not accepted here. No dose was recorded.');return}confirmText='Override approved by '+approvedBy.name+'. Record a dose of '+med.name+' taken now? Confirm only if the dose has actually been taken.'}
+ if(!confirm(confirmText))return;
+ const takenAt=now.toISOString();state.logs.push({key:med.id+'|prn|'+takenAt,medId:med.id,medName:med.name,scheduledTime:'As needed (PRN)',takenAt,employeeId:employee.id,employeeName:employee.name,prnTimeRounding:med.prnTimeRounding||'exact',limitOverrideApprovedBy:approvedBy?approvedBy.name:null});save();render();
+}
+function recordDose(checkbox){
+ const key=checkbox.dataset.key;
+ const items=[...dueItemsForToday(todayKey()),...(selectedDate!==todayKey()?dueItemsForToday(selectedDate):[])];
+ const item=items.find(i=>i.key===key);
+ const feedback=$('recordFeedback');
+ const message=msg=>{feedback.textContent=msg;feedback.style.display='block'};
+ if(!item){message('Could not find this scheduled dose. Refresh the page and try again.');render();return;}
+ if(checkbox.checked){
+  if(logFor(key)){message('This dose is already recorded.');render();return;}
+  const employee=verifyEmployee();if(!employee){render();return;}
+  const takenAt=historicalTakenAt(item);if(!takenAt){render();return;}
+  state.logs.push({key,medId:item.med.id,medName:item.med.name,scheduledTime:item.time,takenAt,employeeId:employee.id,employeeName:employee.name});
+  save();
+  message('Dose recorded: '+item.med.name+' at '+fmtTime(new Date(state.logs[state.logs.length-1].takenAt))+'. Logged by '+employee.name+'.');
+ }else{
+  state.logs=state.logs.filter(l=>l.key!==key);
+  save();
+  message('Dose record removed.');
+ }
+ render();
+}
+$('scheduleDate').value=todayKey();$('scheduleDate').max=todayKey();$('scheduleDate').addEventListener('change',function(){const value=$('scheduleDate').value||todayKey();if(value>todayKey()){alert('Future dates cannot be logged.');$('scheduleDate').value=todayKey();selectedDate=todayKey();}else if(value!==todayKey()&&adminLevel!=='basic'&&adminLevel!=='full'){alert('Sign in as a Pharmacy Technician or Pharmacist to view and log previous dates.');$('scheduleDate').value=todayKey();selectedDate=todayKey();}else selectedDate=value;render();});
+function handleDoseCheckbox(e){const checkbox=e.target.closest('input.check');if(!checkbox)return;recordDose(checkbox)}
+$('todayList').addEventListener('change',handleDoseCheckbox);$('historyDaySchedule').addEventListener('change',handleDoseCheckbox);
+
+document.body.addEventListener('click',e=>{const removeEmp=e.target.closest('[data-remove-employee]')?.dataset.removeEmployee;if(removeEmp){if(adminLevel!=='full'){alert('Only a Pharmacist can remove employees.');return;}const emp=state.employees.find(x=>x.id===removeEmp);if(emp&&confirm('Remove employee '+emp.name+'? Historical dose records will remain attributed to their saved name.')){state.employees=state.employees.filter(x=>x.id!==removeEmp);save();renderEmployees();}return;}const prnButton=e.target.closest('[data-prn]');const prnId=prnButton?.dataset.prn;if(prnId){if(prnButton.closest('#quickPrnModal'))$('quickPrnModal').classList.add('hidden');recordPrnDose(prnId);return}const editId=e.target.closest('[data-edit]')?.dataset.edit;if(editId){editMedication(editId);return}let id=e.target.closest('[data-delete]')?.dataset.delete;if(!id)return;if(adminLevel!=='full'){alert('Only a Pharmacist can delete a medication. Unlock Pharmacist access first.');openAdminLogin();return}let m=state.meds.find(x=>x.id===id);if(m&&confirm('Delete '+m.name+' from your medication list? Existing history will remain.')){state.meds=state.meds.filter(x=>x.id!==id);save();render()}});
+$('modal').addEventListener('click',e=>{if(e.target===$('modal'))close()});
+try{localStorage.setItem('__medtrack_test__','ok');localStorage.removeItem('__medtrack_test__');setStorageStatus('Auto-save enabled',true)}catch(e){setStorageStatus('Browser storage unavailable',false)}
+
+updateEmployeeSessionUI();render();
+// Restore a prior Supabase session and enable shared sync on this device.
+(async()=>{
+ try{
+  if(!window.medtrackSupabase){setStorageStatus('Local mode · Supabase library unavailable',false);return;}
+  const {data:{session}}=await window.medtrackSupabase.auth.getSession();
+  if(session){await loadSharedState();setStorageStatus('Synced with Supabase',true)}
+ }catch(err){console.warn('MedTrack cloud session restore failed:',err);setStorageStatus('Cloud sync unavailable · Sign in to retry',false)}
+})();
+
+// Install prompt is available in some browsers; iPhone installation is done through Safari's Share menu.
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',event=>{
+ event.preventDefault();deferredInstallPrompt=event;$('installBtn').classList.remove('hidden');
+});
+$('installBtn').addEventListener('click',async()=>{
+ if(!deferredInstallPrompt){alert('To install on iPhone: open this site in Safari, tap Share, then Add to Home Screen. On desktop Chrome, use the install icon in the address bar or the browser menu.');return;}
+ deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('installBtn').classList.add('hidden');
+});
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('Service worker registration failed',err)));
+}
+
+})();
+</script></body></html>
